@@ -53,6 +53,22 @@ void AP_MotorsTailsitter::init(motor_frame_class frame_class, motor_frame_type f
     SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorLeft, CH_4);
     SRV_Channels::set_angle(SRV_Channel::k_tiltMotorLeft, SERVO_OUTPUT_RANGE);
 
+    //rightjoint servo defaults to servo output 5
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorRightJoint, CH_5);
+    SRV_Channels::set_angle(SRV_Channel::k_tiltMotorRightJoint, SERVO_OUTPUT_RANGE);
+
+    //leftjoint servo defaults to servo output 6
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorLeftJoint,CH_6);
+    SRV_Channels::set_angle(SRV_Channel::k_tiltMotorLeftJoint,SERVO_OUTPUT_RANGE);
+
+    //rightwheel servo defaults to servo output 7
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_speedMotorRightWheel, CH_7);
+    SRV_Channels::set_angle(SRV_Channel::k_speedMotorRightWheel, SERVO_OUTPUT_RANGE);
+
+    //leftwheel servo defaults to servo output 8
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_speedMotorLeftWheel, CH_8);
+    SRV_Channels::set_angle(SRV_Channel::k_speedMotorLeftWheel, SERVO_OUTPUT_RANGE);
+    
     _mav_type = MAV_TYPE_COAXIAL;
 
     // record successful initialisation if what we setup was the desired frame_class
@@ -112,6 +128,12 @@ void AP_MotorsTailsitter::output_to_motors()
 
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft, _tilt_left*SERVO_OUTPUT_RANGE);
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, _tilt_right*SERVO_OUTPUT_RANGE);
+    
+    SRV_Channels::set_output_scaled(SRV_Channel::k_speedMotorLeftWheel, _speed_leftwheel*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_speedMotorRightWheel, _speed_rightwheel*SERVO_OUTPUT_RANGE);
+
+    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeftJoint,_tilt_leftjoint*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRightJoint,_tilt_rightjoint*SERVO_OUTPUT_RANGE);
 
 }
 
@@ -184,6 +206,11 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     // thrust vectoring
     _tilt_left  = pitch_thrust - yaw_thrust;
     _tilt_right = pitch_thrust + yaw_thrust;
+    _speed_leftwheel = pitch_thrust * 0.5f - yaw_thrust * 0.5f;  //添加左右两个足部电机
+    _speed_rightwheel = pitch_thrust * 0.5f + yaw_thrust * 0.5f;
+    _tilt_leftjoint = pitch_thrust * 0.5f - yaw_thrust * 0.5f;  //添加左右两个关节舵机
+    _tilt_rightjoint = pitch_thrust * 0.5f + yaw_thrust * 0.5f;
+
 }
 
 // output_test_seq - spin a motor at the pwm value specified
@@ -213,6 +240,22 @@ void AP_MotorsTailsitter::output_test_seq(uint8_t motor_seq, int16_t pwm)
         case 4:
             // left tilt servo
             SRV_Channels::set_output_pwm(SRV_Channel::k_tiltMotorLeft, pwm);
+            break;
+        case 5:
+            //right joint tilt servo
+            SRV_Channels::set_output_pwm(SRV_Channel::k_tiltMotorRightJoint, pwm);  //添加左右关节舵机输出的pwm
+            break;
+        case 6:
+            //right wheel speed servo
+            SRV_Channels::set_output_pwm(SRV_Channel::k_speedMotorRightWheel, pwm);
+            break;
+        case 7:
+            //left joint tilt servo
+            SRV_Channels::set_output_pwm(SRV_Channel::k_tiltMotorLeftJoint, pwm);  //添加左右足部电机输出的pwm
+            break; 
+        case 8:
+            //left wheel speed servo
+            SRV_Channels::set_output_pwm(SRV_Channel::k_speedMotorLeftWheel, pwm);
             break;
         default:
             // do nothing

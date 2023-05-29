@@ -45,4 +45,8 @@ protected:
     float _tilt_right;  // -1..1
     float _thrust_left;  // 0..1
     float _thrust_right;  // 0..1
+    float _speed_leftwheel;  //-1..1
+    float _speed_rightwheel;  //-1..1
+    float _tilt_leftjoint;  //-1..1
+    float _tilt_rightjoint;  //-1..1
 };
