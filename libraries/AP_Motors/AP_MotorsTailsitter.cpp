@@ -28,46 +28,46 @@ extern const AP_HAL::HAL& hal;
 #define SERVO_OUTPUT_RANGE  4500
 
 // init
-void AP_MotorsTailsitter::init(motor_frame_class frame_class, motor_frame_type frame_type)
+void AP_MotorsTailsitter::init(motor_frame_class frame_class, motor_frame_type frame_type)  //初始化尾椎式飞行器的电机和舵机
 {
     // setup default motor and servo mappings
     uint8_t chan;
 
     // right throttle defaults to servo output 1
-    SRV_Channels::set_aux_channel_default(SRV_Channel::k_throttleRight, CH_1);
-    if (SRV_Channels::find_channel(SRV_Channel::k_throttleRight, chan)) {
-        motor_enabled[chan] = true;
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_throttleRight, CH_1);  //设置右侧油门电机的默认辅助通道功能为k_throttleRight（右侧油门），通道号为CH_1
+    if (SRV_Channels::find_channel(SRV_Channel::k_throttleRight, chan)) {       //查找已分配给右侧油门功能的通道号，并将其保存在变量chan中
+        motor_enabled[chan] = true;                                             //将找到的右侧油门通道对应的motor_enabled数组元素设置为true，表示该电机已启用
     }
 
     // left throttle defaults to servo output 2
-    SRV_Channels::set_aux_channel_default(SRV_Channel::k_throttleLeft, CH_2);
-    if (SRV_Channels::find_channel(SRV_Channel::k_throttleLeft, chan)) {
-        motor_enabled[chan] = true;
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_throttleLeft, CH_2);  //设置左侧油门电机的默认辅助通道功能为k_throttleLeft（左侧油门），通道号为CH_2
+    if (SRV_Channels::find_channel(SRV_Channel::k_throttleLeft, chan)) {       //查找已分配给左侧油门功能的通道号，并将其保存在变量chan中
+        motor_enabled[chan] = true;                                            //将找到的左侧油门通道对应的motor_enabled数组元素设置为true，表示该电机已启用
     }
 
     // right servo defaults to servo output 3
-    SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorRight, CH_3);
-    SRV_Channels::set_angle(SRV_Channel::k_tiltMotorRight, SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorRight, CH_3);  //设置右侧俯仰伺服舵机的默认辅助通道功能为k_tiltMotorRight（右侧俯仰伺服舵机）。通道号为 CH_3，表示将其连接到舵机输出通道3上。
+    SRV_Channels::set_angle(SRV_Channel::k_tiltMotorRight, SERVO_OUTPUT_RANGE);  //将右侧俯仰伺服舵机的角度范围设置为SERVO_OUTPUT_RANGE。这个函数用于设置伺服舵机的角度范围，确保其适应特定的飞行器需求。
 
     // left servo defaults to servo output 4
-    SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorLeft, CH_4);
-    SRV_Channels::set_angle(SRV_Channel::k_tiltMotorLeft, SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorLeft, CH_4);  //设置左侧俯仰伺服舵机的默认辅助通道功能为k_tiltMotorLeft（左侧俯仰伺服舵机）。通道号为 CH_4，表示将其连接到舵机输出通道4上。
+    SRV_Channels::set_angle(SRV_Channel::k_tiltMotorLeft, SERVO_OUTPUT_RANGE);  //将左侧俯仰伺服舵机的角度范围设置为SERVO_OUTPUT_RANGE。这个函数用于设置伺服舵机的角度范围，确保其适应特定的飞行器需求。
 
     //rightjoint servo defaults to servo output 5
-    SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorRightJoint, CH_5);
-    SRV_Channels::set_angle(SRV_Channel::k_tiltMotorRightJoint, SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorRightJoint, CH_5);  //设置右侧关节俯仰伺服舵机的默认辅助通道功能为k_tiltMotorRightJoint（右侧关节俯仰伺服舵机）。通道号为 CH_5，表示将其连接到舵机输出通道5上。
+    SRV_Channels::set_angle(SRV_Channel::k_tiltMotorRightJoint, SERVO_OUTPUT_RANGE);  //将右侧关节俯仰伺服舵机的角度范围设置为SERVO_OUTPUT_RANGE。这个函数用于设置伺服舵机的角度范围，确保其适应特定的飞行器需求。
 
     //leftjoint servo defaults to servo output 6
-    SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorLeftJoint,CH_6);
-    SRV_Channels::set_angle(SRV_Channel::k_tiltMotorLeftJoint,SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_tiltMotorLeftJoint,CH_6);  //设置左侧关节俯仰伺服舵机的默认辅助通道功能为k_tiltMotorLeftJoint（左侧关节俯仰伺服舵机）。通道号为 CH_6，表示将其连接到舵机输出通道6上。
+    SRV_Channels::set_angle(SRV_Channel::k_tiltMotorLeftJoint,SERVO_OUTPUT_RANGE);  //将左侧关节俯仰伺服舵机的角度范围设置为SERVO_OUTPUT_RANGE。这个函数用于设置伺服舵机的角度范围，确保其适应特定的飞行器需求。
 
     //rightwheel servo defaults to servo output 7
-    SRV_Channels::set_aux_channel_default(SRV_Channel::k_speedMotorRightWheel, CH_7);
-    SRV_Channels::set_angle(SRV_Channel::k_speedMotorRightWheel, SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_speedMotorRightWheel, CH_7);  //设置右侧足部电机的默认辅助通道功能为k_speedMotorRightWheel（右侧足部电机）。通道号为 CH_7，表示将其连接到舵机输出通道7上。
+    SRV_Channels::set_angle(SRV_Channel::k_speedMotorRightWheel, SERVO_OUTPUT_RANGE);  //将右侧足部电机的角度范围设置为SERVO_OUTPUT_RANGE。这个函数用于设置电机的角度范围，确保其适应特定的飞行器需求。
 
     //leftwheel servo defaults to servo output 8
-    SRV_Channels::set_aux_channel_default(SRV_Channel::k_speedMotorLeftWheel, CH_8);
-    SRV_Channels::set_angle(SRV_Channel::k_speedMotorLeftWheel, SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_aux_channel_default(SRV_Channel::k_speedMotorLeftWheel, CH_8);  //设置左侧足部电机的默认辅助通道功能为k_speedMotorLeftWheel（右侧足部电机）。通道号为 CH_8，表示将其连接到舵机输出通道8上。
+    SRV_Channels::set_angle(SRV_Channel::k_speedMotorLeftWheel, SERVO_OUTPUT_RANGE);  //将左侧足部电机的角度范围设置为SERVO_OUTPUT_RANGE。这个函数用于设置电机的角度范围，确保其适应特定的飞行器需求。
     
     _mav_type = MAV_TYPE_COAXIAL;
 
@@ -120,8 +120,8 @@ void AP_MotorsTailsitter::output_to_motors()
             break;
     }
 
-    SRV_Channels::set_output_pwm(SRV_Channel::k_throttleLeft, output_to_pwm(_actuator[0]));
-    SRV_Channels::set_output_pwm(SRV_Channel::k_throttleRight, output_to_pwm(_actuator[1]));
+    SRV_Channels::set_output_pwm(SRV_Channel::k_throttleLeft, output_to_pwm(_actuator[0]));   //将_actuator[0]的输出值转换为PWM信号，并将其设置为左侧油门的输出值
+    SRV_Channels::set_output_pwm(SRV_Channel::k_throttleRight, output_to_pwm(_actuator[1]));  //将_actuator[1]的输出值转换为PWM信号，并将其设置为右侧油门的输出值
 
     // use set scaled to allow a different PWM range on plane forward throttle, throttle range is 0 to 100
     SRV_Channels::set_output_scaled(SRV_Channel::k_throttle, _actuator[2]*100);
@@ -129,11 +129,11 @@ void AP_MotorsTailsitter::output_to_motors()
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft, _tilt_left*SERVO_OUTPUT_RANGE);
     SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, _tilt_right*SERVO_OUTPUT_RANGE);
     
-    SRV_Channels::set_output_scaled(SRV_Channel::k_speedMotorLeftWheel, _speed_leftwheel*SERVO_OUTPUT_RANGE);
-    SRV_Channels::set_output_scaled(SRV_Channel::k_speedMotorRightWheel, _speed_rightwheel*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_speedMotorLeftWheel, _speed_leftwheel*SERVO_OUTPUT_RANGE);    //设置左侧轮速电机的输出值
+    SRV_Channels::set_output_scaled(SRV_Channel::k_speedMotorRightWheel, _speed_rightwheel*SERVO_OUTPUT_RANGE);  //设置右侧轮速电机的输出值
 
-    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeftJoint,_tilt_leftjoint*SERVO_OUTPUT_RANGE);
-    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRightJoint,_tilt_rightjoint*SERVO_OUTPUT_RANGE);
+    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeftJoint,_tilt_leftjoint*SERVO_OUTPUT_RANGE);    //设置左侧关节俯仰伺服舵机通道的输出值
+    SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRightJoint,_tilt_rightjoint*SERVO_OUTPUT_RANGE);  //设置右侧关节俯仰伺服舵机通道的输出值
 
 }
 
@@ -243,19 +243,19 @@ void AP_MotorsTailsitter::output_test_seq(uint8_t motor_seq, int16_t pwm)
             break;
         case 5:
             //right joint tilt servo
-            SRV_Channels::set_output_pwm(SRV_Channel::k_tiltMotorRightJoint, pwm);  //添加左右关节舵机输出的pwm
+            SRV_Channels::set_output_pwm(SRV_Channel::k_tiltMotorRightJoint, pwm);  //将pwm设置为右侧关节俯仰伺服舵机通道的输出值
             break;
         case 6:
             //right wheel speed servo
-            SRV_Channels::set_output_pwm(SRV_Channel::k_speedMotorRightWheel, pwm);
+            SRV_Channels::set_output_pwm(SRV_Channel::k_speedMotorRightWheel, pwm);  //将pwm设置为右侧轮速电机通道的输出值
             break;
         case 7:
             //left joint tilt servo
-            SRV_Channels::set_output_pwm(SRV_Channel::k_tiltMotorLeftJoint, pwm);  //添加左右足部电机输出的pwm
+            SRV_Channels::set_output_pwm(SRV_Channel::k_tiltMotorLeftJoint, pwm);  ////将pwm设置为左侧关节俯仰伺服舵机通道的输出值
             break; 
         case 8:
             //left wheel speed servo
-            SRV_Channels::set_output_pwm(SRV_Channel::k_speedMotorLeftWheel, pwm);
+            SRV_Channels::set_output_pwm(SRV_Channel::k_speedMotorLeftWheel, pwm);  //将pwm设置为左侧轮速电机通道的输出值
             break;
         default:
             // do nothing
